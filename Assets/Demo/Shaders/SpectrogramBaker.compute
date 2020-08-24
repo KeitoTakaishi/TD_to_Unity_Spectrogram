@@ -1,0 +1,20 @@
+﻿#pragma kernel Update
+RWTexture2D<float4> src;
+RWTexture2D<float4> dst;
+RWTexture2D<float4> temp;
+
+float _res;
+[numthreads(32,32,1)]
+void Update (uint3 id : SV_DispatchThreadID)
+{
+	
+	if (id.y == 0.0) {
+		dst[id.xy] = src[id.xy];
+	}
+	else {
+		dst[id.xy] = temp[uint2(id.x, id.y - 1)];
+		//dst[id.xy] = dst [uint2(id.x, id.y-1)];
+	}
+	temp[id.xy] = dst[id.xy];
+	
+}
